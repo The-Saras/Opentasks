@@ -18,5 +18,29 @@ model User {
   id      String @id @default(uuid())
   email   String   @unique
   name    String
+  todos   Todo[]
+  organization Organization[]
   
 }
+
+model Todo{
+  id String @id @default(uuid())
+  title String
+  desc String
+  completed Boolean
+  ownerId String
+  owner       User     @relation(fields: [ownerId], references: [id]) 
+  
+  orgsId String?
+  orgs Organization? @relation(fields: [orgsId], references: [id])
+  
+}
+
+model Organization{
+  id String @id @default(uuid())
+  name String
+  adminId String
+  admin User @relation(fields: [adminId], references: [id])
+  todos Todo[]
+}
+

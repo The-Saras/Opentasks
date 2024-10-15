@@ -3,7 +3,14 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "./providers";
 import { GraphQlProviders } from "./graphqlProvider";
-
+import Sidebar from "@/components/Sidebar";
+const organizations = [
+  { id: "1", name: "Marketing Team" },
+  { id: "2", name: "Development Team" },
+  { id: "3", name: "Sales Team" },
+  { id: "4", name: "HR Department" },
+  { id: "5", name: "Design Team" }
+];
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -30,13 +37,20 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
           <GraphQlProviders>
+            <div className="flex">
+              
+              <div className="fixed inset-y-0 left-0 w-64">
+                <Sidebar organizations={organizations} />
+              </div>
 
-
-          {children}
+              
+              <main className="ml-64 flex-1 p-6">
+                {children}
+              </main>
+            </div>
           </GraphQlProviders>
-
         </Providers>
-        
+
       </body>
     </html>
   );

@@ -1,11 +1,16 @@
 export const typeDefs = `#graphql
     
+    enum Status {
+        PENDING
+        WORKING
+        DONE
+    }
 
     type Todo{
         id: ID
         title: String
         desc: String
-        completed: Boolean
+        completed: Status
         ownerId: String
         orgsId: String
     }
@@ -18,9 +23,9 @@ export const typeDefs = `#graphql
     }
 
     type Mutation{
-        addTodo(title: String!, desc: String!, completed: Boolean,orgsId: String,  ownerId: String): Todo
+        addTodo(title: String!, desc: String!, completed: Status,orgsId: String,  ownerId: String): Todo
         createOrg(name: String!, adminId: String): Organization
-        addTodoToOrg(title: String!, desc: String!, completed: Boolean, orgsId: String!,  ownerId: String): Todo
+        addTodoToOrg(title: String!, desc: String!, completed: Status, orgsId: String!,  ownerId: String): Todo
     }
     type Query {
         todos:[Todo]

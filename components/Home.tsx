@@ -1,8 +1,7 @@
 "use client";
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { Todo } from "./Todo";
-import CreateTodo from "./CreateTodo";
+
 
 export function HomeComp() {
     const session = useSession();
@@ -14,8 +13,7 @@ export function HomeComp() {
             {session.data?.user && <>
                 <button onClick={()=>signOut()} className="bg-blue-400 p-2 ">Signout</button>
                 <div>{session.data.user.name}</div>
-                <CreateTodo />
-                <Todo />
+               
 
             </>}
             

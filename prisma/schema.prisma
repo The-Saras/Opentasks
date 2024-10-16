@@ -23,11 +23,17 @@ model User {
   
 }
 
+
+enum Status {
+  PENDING
+  WORKING
+  DONE
+}
 model Todo{
   id String @id @default(uuid())
   title String
   desc String
-  completed Boolean
+  completed Status
   ownerId String
   owner       User     @relation(fields: [ownerId], references: [id]) 
   

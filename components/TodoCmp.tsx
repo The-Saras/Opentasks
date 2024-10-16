@@ -1,11 +1,13 @@
-
 "use client";
 
-export function TodoCmp(props:any) {
+export function TodoCmp(props: any) {
   return (
-    <div className="p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-md space-y-2">
-      <p className="text-xl font-semibold text-gray-800">{props.title}</p>
-      <p className="text-gray-700">{props.desc}</p>
+    <div className="flex-1 bg-white p-1 shadow-sm">
+      <ul className="space-y-2">
+        <li className="p-2 bg-gray-50 border border-gray-200 rounded-md shadow-sm hover:bg-gray-100 transition-colors">
+          {props.title}
+        </li>
+      </ul>
     </div>
   );
 }

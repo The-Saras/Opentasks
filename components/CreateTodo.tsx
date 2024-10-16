@@ -3,9 +3,12 @@ import { useMutation } from "@apollo/client";
 import { CREATE_TODO } from "../graphql/mutations";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { CircleX } from 'lucide-react';
+type CreateTodoProps = {
+    onClose: () => void;
+};
 
-
-export default function CreateTodo() {
+export default function CreateTodo({ onClose }: CreateTodoProps) {
     const { data: session } = useSession();
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
@@ -19,7 +22,7 @@ export default function CreateTodo() {
         }
     });
 
-    const handleSubmit = async (e:any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         if (!title || !desc) {
             alert("Please fill all fields");
@@ -46,8 +49,9 @@ export default function CreateTodo() {
 
     return (
         <div>
-            <h1>Create Todo</h1>
+            
             <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-gray-100 shadow-md rounded-lg space-y-4">
+            <button onClick={onClose}><CircleX /></button>
                 <input
                     type="text"
                     placeholder="Title"
@@ -80,7 +84,7 @@ export default function CreateTodo() {
                 >
                     {loading ? 'Adding Todo...' : 'Add Todo'}
                 </button>
-                
+
                 {error && <pre className="text-red-500 text-sm mt-2">Error: {JSON.stringify(error, null, 2)}</pre>}
             </form>
         </div>

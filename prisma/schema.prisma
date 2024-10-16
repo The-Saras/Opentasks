@@ -36,7 +36,6 @@ model Todo{
   completed Status
   ownerId String
   owner       User     @relation(fields: [ownerId], references: [id]) 
-  
   orgsId String?
   orgs Organization? @relation(fields: [orgsId], references: [id])
   

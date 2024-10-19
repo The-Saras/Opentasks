@@ -1,5 +1,6 @@
 export const typeDefs = `#graphql
-    
+    scalar DateTime
+
     enum Status {
         PENDING
         WORKING
@@ -13,6 +14,7 @@ export const typeDefs = `#graphql
         completed: Status
         ownerId: String
         orgsId: String
+        date: DateTime
     }
 
     type Organization{
@@ -34,9 +36,9 @@ export const typeDefs = `#graphql
     }
 
     type Mutation{
-        addTodo(title: String!, desc: String!, completed: Status,orgsId: String,  ownerId: String): Todo
+        addTodo(title: String!, desc: String!, completed: Status,orgsId: String,  ownerId: String,date:DateTime): Todo
         createOrg(name: String!, adminId: String): Organization
-        addTodoToOrg(title: String!, desc: String!, completed: Status, orgsId: String!,  ownerId: String): Todo
+        addTodoToOrg(title: String!, desc: String!, completed: Status, orgsId: String!,  ownerId: String,date:DateTime): Todo
         createOrganizationMember(input: CreateOrganizationMemberInput!): OrganizationMember
     }
     type Query {
@@ -45,6 +47,7 @@ export const typeDefs = `#graphql
         getOrgTodo(orgsId: String): [Todo]
         getUserOrgs(userId: String): [Organization!]!
         getUserCreatedTeams(adminId: String): [Organization!]!
+        getteamDetails(orgsId: String): Organization
     }
 
 

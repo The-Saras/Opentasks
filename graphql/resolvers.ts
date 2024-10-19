@@ -8,7 +8,8 @@ export const resolvers = {
                     desc: args.desc,
                     completed: args.completed,
                     ownerId: args.ownerId,
-                    orgsId: args.orgsId
+                    orgsId: args.orgsId,
+                    date: args.date
 
                 }
             })
@@ -30,7 +31,8 @@ export const resolvers = {
                     desc: args.desc,
                     completed: args.completed,
                     ownerId: args.ownerId,
-                    orgsId: args.orgsId
+                    orgsId: args.orgsId,
+                    date:args.date
                 }
             })
         },
@@ -81,6 +83,13 @@ export const resolvers = {
             return await context.prisma.organization.findMany({
                 where:{
                     adminId: args.adminId
+                }
+            })
+        },
+        getteamDetails :async(_parent: any, args: any, context: Context) => {
+            return await context.prisma.organization.findUnique({
+                where:{
+                    id: args.orgsId
                 }
             })
         }

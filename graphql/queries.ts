@@ -34,3 +34,27 @@ export const GET_USER_CREATED_TEAMS = gql`
     }
 }
 `;
+
+export const GET_ORG_TASKS = gql`
+    query GetOrgTodo($orgsId: String) {
+        getOrgTodo(orgsId: $orgsId) {
+        completed
+        desc
+        title
+        ownerId
+        orgsId
+        id
+        date
+    }
+    }
+
+`;
+
+export const GET_TEAM_DETAILS = gql`
+    query GetteamDetails($orgsId: String) {
+        getteamDetails(orgsId: $orgsId) {
+        name
+    }
+    }
+
+`;

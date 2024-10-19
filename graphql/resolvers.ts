@@ -33,7 +33,16 @@ export const resolvers = {
                     orgsId: args.orgsId
                 }
             })
+        },
+        createOrganizationMember:async(_parent: any, args: any, context: Context) => {
+            return await context.prisma.organizationMember.create({
+                data:{
+                    organizationId: args.input.organizationId,
+                    userId: args.input.userId
+                }
+            })
         }
+
     },
 
     Query: {
@@ -52,6 +61,26 @@ export const resolvers = {
             return await context.prisma.todo.findMany({
                 where: {
                     orgsId: args.orgsId
+                }
+            })
+        },
+        getUserOrgs: async(_parent: any, args: any, context: Context) => {
+            const memberships =  await context.prisma.organizationMember.findMany({
+                where:{
+                    userId: args.userId
+                },
+                include:{
+                    organization:true
+                }
+            })
+            console.log(memberships.map((m: any) => m.organization))
+            return memberships.map((m: any) => m.organization);
+        },
+
+        getUserCreatedTeams: async(_parent: any, args: any, context: Context) => {
+            return await context.prisma.organization.findMany({
+                where:{
+                    adminId: args.adminId
                 }
             })
         }

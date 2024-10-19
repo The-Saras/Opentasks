@@ -1,9 +1,11 @@
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "./providers";
 import { GraphQlProviders } from "./graphqlProvider";
 import Sidebar from "@/components/Sidebar";
+
 const organizations = [
   { id: "1", name: "Marketing Team" },
   { id: "2", name: "Development Team" },
@@ -11,6 +13,8 @@ const organizations = [
   { id: "4", name: "HR Department" },
   { id: "5", name: "Design Team" }
 ];
+
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -32,6 +36,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>

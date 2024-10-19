@@ -13,39 +13,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id      String @id @default(uuid())
-  email   String   @unique
-  name    String
-  todos   Todo[]
-  organization Organization[]
-  
+  id            String               @id @default(uuid())
+  email         String               @unique
+  name          String
+  todos         Todo[]
+  organization  Organization[]
+  organizations OrganizationMember[]
 }
-
 
 enum Status {
   PENDING
   WORKING
   DONE
 }
-model Todo{
-  id String @id @default(uuid())
-  title String
-  desc String
+
+model Todo {
+  id        String        @id @default(uuid())
+  title     String
+  desc      String
   completed Status
-  ownerId String
-  owner       User     @relation(fields: [ownerId], references: [id]) 
-  orgsId String?
-  orgs Organization? @relation(fields: [orgsId], references: [id])
-  
+  ownerId   String
+  owner     User          @relation(fields: [ownerId], references: [id])
+  orgsId    String?
+  orgs      Organization? @relation(fields: [orgsId], references: [id])
 }
 
-model Organization{
-  id String @id @default(uuid())
-  name String
+model Organization {
+  id      String               @id @default(uuid())
+  name    String
   adminId String
-  admin User @relation(fields: [adminId], references: [id])
-  todos Todo[]
+  admin   User                 @relation(fields: [adminId], references: [id])
+  todos   Todo[]
+  members OrganizationMember[]
 }
 
+model OrganizationMember {
+  organizationId String
+  userId         String
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+
+  @@id([organizationId, userId]) 
+}

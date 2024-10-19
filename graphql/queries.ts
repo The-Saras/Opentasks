@@ -13,4 +13,24 @@ export const GET_TODOS = gql`
         }
     }
 
+
+`;
+
+export const GET_USER_ORG = gql`
+    query GetUserOrgs($userId: String) {
+        getUserOrgs(userId: $userId) {
+            name
+            id
+        }
+    }
+
+`;
+
+export const GET_USER_CREATED_TEAMS = gql`
+    query GetUserCreatedTeams($adminId: String) {
+        getUserCreatedTeams(adminId: $adminId) {
+            name
+            id
+    }
+}
 `;

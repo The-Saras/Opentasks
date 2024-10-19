@@ -22,15 +22,29 @@ export const typeDefs = `#graphql
         todos: [Todo]
     }
 
+    type OrganizationMember {
+        
+        organizationId: ID!
+        userId: ID!
+    }
+
+    input CreateOrganizationMemberInput {
+        organizationId: ID!
+        userId: ID!
+    }
+
     type Mutation{
         addTodo(title: String!, desc: String!, completed: Status,orgsId: String,  ownerId: String): Todo
         createOrg(name: String!, adminId: String): Organization
         addTodoToOrg(title: String!, desc: String!, completed: Status, orgsId: String!,  ownerId: String): Todo
+        createOrganizationMember(input: CreateOrganizationMemberInput!): OrganizationMember
     }
     type Query {
         todos:[Todo]
         getuserTodos(ownerId: String): [Todo]
         getOrgTodo(orgsId: String): [Todo]
+        getUserOrgs(userId: String): [Organization!]!
+        getUserCreatedTeams(adminId: String): [Organization!]!
     }
 
 

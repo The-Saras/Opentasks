@@ -7,3 +7,11 @@ export const CREATE_TODO = gql`
         }
     }
 `
+
+export const CREATE_ORG_TODO = gql`
+      mutation Mutation($title: String!, $desc: String!, $orgsId: String!, $completed: Status, $ownerId: String, $date: DateTime) {
+    addTodoToOrg(title: $title, desc: $desc, orgsId: $orgsId, completed: $completed, ownerId: $ownerId, date: $date) {
+      id
+    }
+  }
+`;

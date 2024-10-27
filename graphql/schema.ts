@@ -40,6 +40,7 @@ export const typeDefs = `#graphql
         createOrg(name: String!, adminId: String): Organization
         addTodoToOrg(title: String!, desc: String!, completed: Status, orgsId: String!,  ownerId: String,date:DateTime): Todo
         createOrganizationMember(input: CreateOrganizationMemberInput!): OrganizationMember
+        updateTodo(id: ID!, title: String, desc: String, completed: Status, ownerId: String, orgsId: String, date: DateTime): Todo
     }
     type Query {
         todos:[Todo]
@@ -48,6 +49,7 @@ export const typeDefs = `#graphql
         getUserOrgs(userId: String): [Organization!]!
         getUserCreatedTeams(adminId: String): [Organization!]!
         getteamDetails(orgsId: String): Organization
+        getTodobyId(id: ID!): Todo
     }
 
 

@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { CREATE_ORG_TODO } from "@/graphql/mutations";
 import { useSession } from "next-auth/react";
 
-export default function TaskForm(props: any) {
+export default function TaskForm({ id, closeForm }: any) {
     const { data: session } = useSession();
     const [dueDate, setDueDate] = useState<Date | null>(null);
     const [completed, setCompleted] = useState("PENDING");
@@ -21,7 +21,8 @@ export default function TaskForm(props: any) {
             setTitle("");
             setDesc("");
             setCompleted("PENDING");
-            setDueDate(null); // Optionally reset due date
+            setDueDate(null);
+            
         }
     });
 
@@ -42,7 +43,7 @@ export default function TaskForm(props: any) {
                     title,
                     desc,
                     completed,
-                    orgsId: props.id,
+                    orgsId: id,
                     ownerId: session.user.id,
                     date: isoDate
                 }
@@ -53,20 +54,22 @@ export default function TaskForm(props: any) {
     };
 
     return (
-        <div className="max-w-md mx-auto border border-gray-300 rounded-lg p-2 shadow-sm">
+        <div className="max-w-md mx-auto border border-gray-300 rounded-lg p-2 shadow-sm hover:border-gray-500">
             <div>
-                <input 
-                    className="rounded p-2 text-gray-700 outline-none" 
-                    placeholder="Task name" 
-                    onChange={(e) => setTitle(e.target.value)} 
+                <input
+                    className="rounded p-2 text-gray-700 outline-none"
+                    placeholder="Task name"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                 />
             </div>
 
             <div>
-                <input 
-                    className="text-xs rounded p-2 pb-4 text-gray-700 outline-none" 
-                    placeholder="Description" 
-                    onChange={(e) => setDesc(e.target.value)} 
+                <input
+                    className="text-xs rounded p-2 pb-4 text-gray-700 outline-none"
+                    placeholder="Description"
+                    value={desc}
+                    onChange={(e) => setDesc(e.target.value)}
                 />
             </div>
 
@@ -76,18 +79,18 @@ export default function TaskForm(props: any) {
                     <DatePicker
                         selected={dueDate}
                         onChange={(date) => setDueDate(date)}
-                        dateFormat="dd MMM yyyy h:mm aa" // Format to include time
-                        showTimeSelect // Show time picker
-                        timeFormat="HH:mm" // 24-hour format
-                        timeIntervals={15} // Time intervals for picking
+                        dateFormat="dd MMM yyyy h:mm aa"
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
                         placeholderText="Due date and time"
                         className="outline-none text-gray-700"
                     />
                 </div>
 
                 <div className="inline-flex items-center border-solid border-2 border-gray-200 rounded px-2 py-1">
-                    <select 
-                        className="ml-2 bg-white text-gray-700 outline-none border-none" 
+                    <select
+                        className="ml-2 bg-white text-gray-700 outline-none border-none"
                         onChange={(e) => setCompleted(e.target.value)}
                     >
                         <option value="PENDING" className="text-red-500">Pending</option>
@@ -98,13 +101,16 @@ export default function TaskForm(props: any) {
             </div>
 
             <div className="border-t border-gray-300 pt-2">
-                <button 
-                    className="bg-slate-700 text-slate-50 p-1 mr-2 rounded-md text-sm" 
+                <button
+                    className="bg-slate-700 text-slate-50 p-1 mr-2 rounded-md text-sm"
                     onClick={handleSubmit}
                 >
                     Create
                 </button>
-                <button className="bg-slate-200 text-slate-950 p-1 mr-2 rounded-md text-sm">
+                <button
+                    className="bg-slate-200 text-slate-950 p-1 mr-2 rounded-md text-sm"
+                    onClick={closeForm} 
+                >
                     Cancel
                 </button>
             </div>

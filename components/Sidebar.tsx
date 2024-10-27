@@ -2,7 +2,9 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Home, User, ChevronRight, Menu, X,Users } from "lucide-react"
-
+import { useQuery } from "@apollo/client"
+import { useSession } from 'next-auth/react';
+import { GET_USER_ORG } from "@/graphql/queries"
 
 interface Organization {
   id: string
@@ -15,6 +17,8 @@ interface SidebarProps {
 
 export default function Sidebar({ organizations = [] }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const { data: session } = useSession();
+  const { data, loading, error } = useQuery(GET_USER_ORG, { variables: { userId: session?.user?.id } });
 
   return (
     <>
@@ -69,7 +73,8 @@ export default function Sidebar({ organizations = [] }: SidebarProps) {
           <div className="overflow-y-auto px-3">
             <h3 className="mb-2 px-4 text-sm font-semibold text-gray-500">Organizations</h3>
             <nav className="space-y-1">
-              {organizations.map((org) => (
+              
+              {data && data.getUserOrgs.map((org:any) => (
                 <Link
                   key={org.id}
                   href={`/org/${org.id}`}

@@ -43,6 +43,21 @@ export const resolvers = {
                     userId: args.input.userId
                 }
             })
+        },
+        updateTodo:async(_parent: any, args: any, context: Context) => {
+            return await context.prisma.todo.update({
+                where:{
+                    id: args.id
+                },
+                data:{
+                    title: args.title,
+                    desc: args.desc,
+                    completed: args.completed,
+                    ownerId: args.ownerId,
+                    orgsId: args.orgsId,
+                    date: args.date
+                }
+            })
         }
 
     },
@@ -75,7 +90,7 @@ export const resolvers = {
                     organization:true
                 }
             })
-            console.log(memberships.map((m: any) => m.organization))
+            //console.log(memberships.map((m: any) => m.organization))
             return memberships.map((m: any) => m.organization);
         },
 
@@ -90,6 +105,13 @@ export const resolvers = {
             return await context.prisma.organization.findUnique({
                 where:{
                     id: args.orgsId
+                }
+            })
+        },
+        getTodobyId : async(_parent:any,args:any,context:Context)=>{
+            return await context.prisma.todo.findUnique({
+                where:{
+                    id:args.id
                 }
             })
         }

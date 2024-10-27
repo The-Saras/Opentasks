@@ -58,3 +58,17 @@ export const GET_TEAM_DETAILS = gql`
     }
 
 `;
+
+export const GET_TODO_BYID = gql`
+    query GetTodobyId($getTodobyIdId: ID!) {
+        getTodobyId(id: $getTodobyIdId) {
+        title
+        ownerId
+        orgsId
+        id
+        date
+        desc
+        completed
+    }
+    }
+`;

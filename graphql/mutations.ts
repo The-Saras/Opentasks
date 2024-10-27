@@ -15,3 +15,10 @@ export const CREATE_ORG_TODO = gql`
     }
   }
 `;
+
+export const UPDATE_TODO = gql`
+mutation Mutation($updateTodoId: ID!, $title: String, $desc: String, $completed: Status, $ownerId: String, $orgsId: String, $date: DateTime) {
+  updateTodo(id: $updateTodoId, title: $title, desc: $desc, completed: $completed, ownerId: $ownerId, orgsId: $orgsId, date: $date) {
+    id
+  }
+}`;

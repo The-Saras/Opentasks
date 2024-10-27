@@ -1,4 +1,6 @@
 import { CalendarFold } from "lucide-react";
+import { useQuery } from "@apollo/client";
+import { GET_TODO_BYID } from "@/graphql/queries";
 
 interface TaskProps {
     title: string;
@@ -7,6 +9,7 @@ interface TaskProps {
 }
 
 export function Task(props: TaskProps) {
+    
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
             case "pending":
@@ -21,7 +24,7 @@ export function Task(props: TaskProps) {
     };
 
     return (
-        <div className="max-w-2xl mx-auto border-b border-gray-300 pb-4 mb-4 px-6">
+        <div className="max-w-2xl mx-auto border-b border-gray-300 pb-4 mb-4 px-6 cursor-pointer" >
             <p className="text-base">{props.title}</p>
             <div className="flex justify-between items-center text-sm">
                 <p className="text-blue-500">

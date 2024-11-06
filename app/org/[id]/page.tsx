@@ -7,8 +7,12 @@ import { Plus } from "lucide-react";
 import TaskForm from "@/components/CreateOrgTask";
 import { useState } from "react";
 import TaskCard from "@/components/TaskPoster";
+import { AddMember } from "@/components/AddMember";
+import { useSession } from "next-auth/react";
 
 export default function Page() {
+  const { data: session } = useSession();
+  const userID = session?.user?.id;
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [poster, setPoster] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
@@ -101,6 +105,11 @@ export default function Page() {
           <TaskForm id={id} closeForm={closeForm} />
         </div>
       )}
+
+    {teamData && teamData.getteamDetails.adminId === session?.user?.id && (
+
+    <AddMember />
+    )}
     </div>
   );
 }

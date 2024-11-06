@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_TODO_BYID } from "@/graphql/queries";
 import { UPDATE_TODO } from "@/graphql/mutations";
+import { ASSIGN_TASK } from "@/graphql/mutations";
 
 type Status = "PENDING" | "WORKING" | "DONE";
 
@@ -19,6 +20,7 @@ const TaskCard = ({
   const [dueDate, setDueDate] = React.useState<Date | null>(null);
   const [title, setTitle] = React.useState<string>("");
   const [desc, setDesc] = React.useState<string>("");
+  const [assignedTo, setAssignedTo] = React.useState<string>("");
 
   const { data, loading, error } = useQuery(GET_TODO_BYID, {
     variables: { getTodobyIdId: todoid },
@@ -28,9 +30,16 @@ const TaskCard = ({
       setDesc(data?.getTodobyId?.desc || "");
       setCompleted(data?.getTodobyId?.completed || "PENDING");
       setDueDate(new Date(data?.getTodobyId?.date));
+      setAssignedTo(data?.getTodobyId?.assignee.name || "none");
       
     },
     onError: (error) => console.log("Query error:", error),
+  });
+
+  const [assignTask] = useMutation(ASSIGN_TASK,{
+    onCompleted: ()=>{
+      alert("Task assigned successfully")
+    }
   });
 
   const [updateTodo] = useMutation(UPDATE_TODO);
@@ -46,13 +55,21 @@ const TaskCard = ({
           date: dueDate,
         },
       });
+      if(assignedTo !== ""){
+        await assignTask({
+          variables:{
+            todoId: todoid,
+            email: assignedTo
+          }
+        })
+      }
       closeForm();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const assignee: string = "John Doe";
+  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error! {error.message}</div>;
@@ -104,9 +121,9 @@ const TaskCard = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-gray-600">
+        <div className="flex items-center text-gray-600">
           <User size={20} className="mr-2" />
-          <span>{assignee}</span>
+          <input placeholder={assignedTo} className="outline-none" onChange={(e)=>{setAssignedTo(e.target.value)}}></input>
         </div>
 
         <div className="flex justify-end space-x-3">

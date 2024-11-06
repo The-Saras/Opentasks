@@ -18,8 +18,10 @@ model User {
   email         String               @unique
   name          String
   todos         Todo[]
+  assignedTodos Todo[]  @relation("AssignedTodos")
   organization  Organization[]
   organizations OrganizationMember[]
+  
 }
 
 enum Status {
@@ -38,6 +40,8 @@ model Todo {
   orgsId    String?
   orgs      Organization? @relation(fields: [orgsId], references: [id])
   date      DateTime?
+  assigneeId  String?
+  assignee    User?         @relation("AssignedTodos", fields: [assigneeId], references: [id])
 }
 
 model Organization {

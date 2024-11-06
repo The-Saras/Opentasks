@@ -54,6 +54,7 @@ export const GET_TEAM_DETAILS = gql`
     query GetteamDetails($orgsId: String) {
         getteamDetails(orgsId: $orgsId) {
         name
+        adminId
     }
     }
 
@@ -69,6 +70,10 @@ export const GET_TODO_BYID = gql`
         date
         desc
         completed
+        assigneeId
+        assignee {
+        name
+        }
     }
     }
 `;

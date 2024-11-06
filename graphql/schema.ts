@@ -7,6 +7,12 @@ export const typeDefs = `#graphql
         DONE
     }
 
+    type User{
+        id:ID
+        email: String
+        name: String
+    }
+
     type Todo{
         id: ID
         title: String
@@ -15,6 +21,8 @@ export const typeDefs = `#graphql
         ownerId: String
         orgsId: String
         date: DateTime
+        assigneeId: String
+        assignee: User 
     }
 
     type Organization{
@@ -31,8 +39,9 @@ export const typeDefs = `#graphql
     }
 
     input CreateOrganizationMemberInput {
+        email: String!
         organizationId: ID!
-        userId: ID!
+        
     }
 
     type Mutation{
@@ -41,6 +50,7 @@ export const typeDefs = `#graphql
         addTodoToOrg(title: String!, desc: String!, completed: Status, orgsId: String!,  ownerId: String,date:DateTime): Todo
         createOrganizationMember(input: CreateOrganizationMemberInput!): OrganizationMember
         updateTodo(id: ID!, title: String, desc: String, completed: Status, ownerId: String, orgsId: String, date: DateTime): Todo
+        assignTodoTouser(todoId: ID!, email: String): Todo 
     }
     type Query {
         todos:[Todo]

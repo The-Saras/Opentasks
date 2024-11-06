@@ -4,21 +4,25 @@ import { CREATE_TODO } from "../graphql/mutations";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { CircleX } from 'lucide-react';
+
 type CreateTodoProps = {
     onClose: () => void;
 };
 
 export default function CreateTodo({ onClose }: CreateTodoProps) {
     const { data: session } = useSession();
+    const [dueDate, setDueDate] = useState<Date | null>(null);
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
     const [completed, setStatus] = useState("PENDING");
+    const isoDate = dueDate ? dueDate.toISOString() : null;
 
     const [addTodo, { loading, error }] = useMutation(CREATE_TODO, {
         onCompleted: () => {
             setTitle("");
             setDesc("");
             setStatus("PENDING");
+            setDueDate(null);
         }
     });
 
@@ -39,7 +43,8 @@ export default function CreateTodo({ onClose }: CreateTodoProps) {
                     title,
                     desc,
                     completed,
-                    ownerId: session.user.id
+                    ownerId: session.user.id,
+                    date: isoDate
                 }
             });
         } catch (e) {

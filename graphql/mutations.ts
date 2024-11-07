@@ -7,6 +7,7 @@ export const CREATE_TODO = gql`
     $completed: Status
     $orgsId: String
     $ownerId: String
+    $date: DateTime
   ) {
     addTodo(
       title: $title
@@ -14,8 +15,9 @@ export const CREATE_TODO = gql`
       completed: $completed
       orgsId: $orgsId
       ownerId: $ownerId
+      date: $date
     ) {
-      title
+      id
     }
   }
 `;

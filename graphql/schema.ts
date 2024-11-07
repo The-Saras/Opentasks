@@ -36,6 +36,7 @@ export const typeDefs = `#graphql
         
         organizationId: ID!
         userId: ID!
+        user:User
     }
 
     input CreateOrganizationMemberInput {
@@ -60,6 +61,7 @@ export const typeDefs = `#graphql
         getUserCreatedTeams(adminId: String): [Organization!]!
         getteamDetails(orgsId: String): Organization
         getTodobyId(id: ID!): Todo
+        getOrgMembers(orgsId: String): [OrganizationMember]
     }
 
 

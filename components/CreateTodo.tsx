@@ -3,25 +3,26 @@ import { useMutation } from "@apollo/client";
 import { CREATE_TODO } from "../graphql/mutations";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { CircleX } from 'lucide-react';
+import { CalendarFold } from "lucide-react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-type CreateTodoProps = {
-    onClose: () => void;
-};
 
-export default function CreateTodo({ onClose }: CreateTodoProps) {
+
+export default function CreateTodo({ id, closeForm }: any) {
     const { data: session } = useSession();
     const [dueDate, setDueDate] = useState<Date | null>(null);
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
-    const [completed, setStatus] = useState("PENDING");
+    
     const isoDate = dueDate ? dueDate.toISOString() : null;
+    const [completed, setCompleted] = useState("PENDING");
 
     const [addTodo, { loading, error }] = useMutation(CREATE_TODO, {
         onCompleted: () => {
             setTitle("");
             setDesc("");
-            setStatus("PENDING");
+           setCompleted("PENDING");
             setDueDate(null);
         }
     });
@@ -53,45 +54,66 @@ export default function CreateTodo({ onClose }: CreateTodoProps) {
     };
 
     return (
-        <div>
-            
-            <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-gray-100 shadow-md rounded-lg space-y-4">
-            <button onClick={onClose}><CircleX /></button>
+        <div className="max-w-md mx-auto border border-gray-300 rounded-lg p-2 shadow-sm hover:border-gray-500">
+            <div>
                 <input
-                    type="text"
-                    placeholder="Title"
+                    className="rounded p-2 text-gray-700 outline-none"
+                    placeholder="Task name"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    required
-                    className="w-full p-3 border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-gray-700"
                 />
-                <textarea
+            </div>
+
+            <div>
+                <input
+                    className="text-xs rounded p-2 pb-4 text-gray-700 outline-none"
                     placeholder="Description"
                     value={desc}
                     onChange={(e) => setDesc(e.target.value)}
-                    required
-                    className="w-full p-3 border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-gray-700"
                 />
-                <select
-                    value={completed}
-                    onChange={(e) => setStatus(e.target.value)}
-                    required
-                    className="w-full p-3 border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-gray-700"
-                >
-                    <option value="PENDING">Pending</option>
-                    <option value="WORKING">Working</option>
-                    <option value="DONE">Done</option>
-                </select>
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full py-2 px-4 bg-gray-800 text-white rounded hover:bg-gray-900 disabled:opacity-50"
-                >
-                    {loading ? 'Adding Todo...' : 'Add Todo'}
-                </button>
+            </div>
 
-                {error && <pre className="text-red-500 text-sm mt-2">Error: {JSON.stringify(error, null, 2)}</pre>}
-            </form>
+            <div className="flex items-center space-x-4 mb-4">
+                <div className="inline-flex items-center border-solid border-2 border-gray-200 rounded px-2 py-1">
+                    <CalendarFold size={16} className="mr-2" color="gray" />
+                    <DatePicker
+                        selected={dueDate}
+                        onChange={(date) => setDueDate(date)}
+                        dateFormat="dd MMM yyyy h:mm aa"
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        placeholderText="Due date and time"
+                        className="outline-none text-gray-700"
+                    />
+                </div>
+
+                <div className="inline-flex items-center border-solid border-2 border-gray-200 rounded px-2 py-1">
+                    <select
+                        className="ml-2 bg-white text-gray-700 outline-none border-none"
+                        onChange={(e) => setCompleted(e.target.value)}
+                    >
+                        <option value="PENDING" className="text-red-500">Pending</option>
+                        <option value="WORKING" className="text-blue-500">Working</option>
+                        <option value="DONE" className="text-green-500">Done</option>
+                    </select>
+                </div>
+            </div>
+
+            <div className="border-t border-gray-300 pt-2">
+                <button
+                    className="bg-slate-700 text-slate-50 p-1 mr-2 rounded-md text-sm"
+                    onClick={handleSubmit}
+                >
+                    Create
+                </button>
+                <button
+                    className="bg-slate-200 text-slate-950 p-1 mr-2 rounded-md text-sm"
+                    onClick={closeForm} 
+                >
+                    Cancel
+                </button>
+            </div>
         </div>
     );
 }

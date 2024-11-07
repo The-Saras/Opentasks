@@ -9,6 +9,7 @@ import { useState } from "react";
 import TaskCard from "@/components/TaskPoster";
 import { AddMember } from "@/components/AddMember";
 import { useSession } from "next-auth/react";
+import { MemberListModal } from "@/components/Memberlist";
 
 export default function Page() {
   const { data: session } = useSession();
@@ -17,6 +18,10 @@ export default function Page() {
   const [poster, setPoster] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const { id } = useParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const { data, loading, error } = useQuery(GET_ORG_TASKS, {
     variables: { orgsId: id },
@@ -40,7 +45,7 @@ export default function Page() {
 
   const closePoster = () => {
     setPoster(false);
-    setSelectedTaskId(null); 
+    setSelectedTaskId(null);
   };
 
   return (
@@ -75,7 +80,7 @@ export default function Page() {
               key={task.id}
               onClick={() => {
                 setPoster(true);
-                setSelectedTaskId(task.id); 
+                setSelectedTaskId(task.id);
               }}
             >
               <Task
@@ -95,10 +100,7 @@ export default function Page() {
       </div>
 
       {poster && selectedTaskId && (
-        <TaskCard
-          closeForm={closePoster}
-          todoid={selectedTaskId} 
-        />
+        <TaskCard closeForm={closePoster} todoid={selectedTaskId} />
       )}
       {isFormVisible && (
         <div className="mt-4">
@@ -106,10 +108,18 @@ export default function Page() {
         </div>
       )}
 
-    {teamData && teamData.getteamDetails.adminId === session?.user?.id && (
-
-    <AddMember />
-    )}
+      {teamData && teamData.getteamDetails.adminId === session?.user?.id && (
+        <>
+          <AddMember />
+        </>
+      )}
+      <button
+        onClick={openModal}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Show Members
+      </button>
+      <MemberListModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
 }

@@ -103,6 +103,7 @@ export const resolvers = {
       return await context.prisma.todo.findMany({
         where: {
           ownerId: args.ownerId,
+          orgsId: null,
         },
       });
     },
@@ -150,5 +151,15 @@ export const resolvers = {
         }
       });
     },
+    getOrgMembers: async (_parent: any, args: any, context: Context) => {
+      return await context.prisma.organizationMember.findMany({
+        where: {
+          organizationId: args.orgsId,
+        },
+        include:{
+          user: true
+        }
+      });
+    }
   },
 };
